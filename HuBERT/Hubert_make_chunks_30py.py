@@ -3,11 +3,11 @@ from pydub import AudioSegment
 from pydub.utils import make_chunks
 
 # Giriş ve çıkış klasör yolları
-input_base_folder = "path/to/your/input/base/folder"
-output_base_folder = "path/to/your/output/base/folder"
+input_base_folder = "C:/Users/Artun/Desktop/Müzik Veri Seti/wav"
+output_base_folder = "C:/Users/Artun/Desktop/Müzik Veri Seti/wav"
 
 # Alt klasörlerin adları
-subfolders = ['Agresif Müzikler', 'Hüzünlü Müzikler', 'Neşeli Müzikler']
+subfolders = ['Agresif', 'Hüzünlü', 'Neşeli']
 
 # Her alt klasördeki tüm wav dosyalarını işleyin
 for subfolder in subfolders:
@@ -29,8 +29,10 @@ for subfolder in subfolders:
                     chunk_name = f"{os.path.splitext(file)[0]}_chunk{i}.wav"
                     chunk_output_path = os.path.join(output_subfolder_path, chunk_name)
                     chunk.export(chunk_output_path, format="wav")
+                    print(f"Eklendi: {chunk_output_path}")
                 
                 # Orijinal dosyayı silme
                 os.remove(input_wav_file_path)
-
+                print(f"Silindi: {input_wav_file_path}")
+                
 print("Audio segmentation and deletion completed!")

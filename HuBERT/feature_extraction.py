@@ -1,53 +1,45 @@
-# feature_extraction.py
-
-import torch
-import torchaudio
-from transformers import HubertModel, Wav2Vec2Processor
 import os
+import librosa
 import numpy as np
+from sklearn.preprocessing import LabelEncoder
 
-# HuBert modelini ve tokenizer'ı yükleyin
-processor = Wav2Vec2Processor.from_pretrained("facebook/hubert-large-ls960-ft")
-model = HubertModel.from_pretrained("facebook/hubert-large-ls960-ft")
+# Veri yollarını ve etiketleri belirleyin
+data_dir = "C:/Users/Artun/Desktop/Müzik Veri Seti/wav"  # Bu kısmı kendi veri yolunuza göre düzenleyin
+categories = ["Agresif", "Hüzünlü", "Neşeli"]
 
-# Bir wav dosyasından özellik çıkarma
-def extract_features(wav_file):
-    waveform, sample_rate = torchaudio.load(wav_file)
-    inputs = processor(waveform, sampling_rate=sample_rate, return_tensors="pt", padding=True)
-    with torch.no_grad():
-        features = model(**inputs).last_hidden_state
-    return features.mean(dim=1).squeeze().numpy()  # Ortalamayı alarak tek boyutlu özellik vektörü elde edin
+def extract_features(data_dir, categories, n_mfcc=13):
+    features = []
+    labels = []
+    
+    for category in categories:
+        category_path = os.path.join(data_dir, category)
+        print(f"Kategori: {category}")
+        for file in os.listdir(category_path):
+            if file.endswith('.wav'):
+                file_path = os.path.join(category_path, file)
+                print(f"  Dosya: {file_path}")
+                y, sr = librosa.load(file_path, sr=None)
+                mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=n_mfcc)
+                mfccs = np.mean(mfccs.T, axis=0)
+                features.append(mfccs)
+                labels.append(category)
+    
+    return np.array(features), labels
 
-# Özellikleri ve etiketleri saklamak için listeler
-features = []
-labels = []
+features, labels = extract_features(data_dir, categories)
 
-# Wav dosyalarının bulunduğu ana dizinler
-directories = {
-    'Agresif Müzikler': 0,
-    'Hüzünlü Müzikler': 1,
-    'Neşeli Müzikler': 2
-}
+# Etiketleri sayısal değere dönüştürme
+label_encoder = LabelEncoder()
+labels = label_encoder.fit_transform(labels)
 
-# Wav dosyalarından özellikleri çıkarma ve veri setini hazırlama
-def process_and_extract_features(directories):
-    for label, class_idx in directories.items():
-        folder_path = f'C:/Users/Artun/Desktop/Müzik Veri Seti/wav/{label}'  # Örneğin: 'path/to/your/Agresif Müzikler'
-        for root, _, files in os.walk(folder_path):
-            for file in files:
-                if file.endswith('.wav'):
-                    wav_file_path = os.path.join(root, file)
-                    feature = extract_features(wav_file_path)
-                    features.append(feature)
-                    labels.append(class_idx)
+print("Etiketlerin sayısal karşılıkları:")
+for category, encoded_label in zip(categories, label_encoder.transform(categories)):
+    print(f"  {category}: {encoded_label}")
 
-# Veri setinin hazırlanması ve özellik çıkarma işlemleri
-process_and_extract_features(directories)
-
-# Veri setinin boyutlarını kontrol etme
-print("Features shape:", np.array(features).shape)
-print("Labels shape:", np.array(labels).shape)
-
-# Özellikleri ve etiketleri kaydetme
+# Verileri kaydetme
 np.save('features.npy', features)
 np.save('labels.npy', labels)
+
+print("Veriler ve etiketler kaydedildi:")
+print("  features.npy dosyasına özellikler kaydedildi.")
+print("  labels.npy dosyasına etiketler kaydedildi.")
