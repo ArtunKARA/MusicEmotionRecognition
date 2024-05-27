@@ -93,8 +93,8 @@ def delete_random_files(directory, num_files_to_delete):
     print(f"{num_files_to_delete} adet dosya silindi.")
 
 # Kullanım
-directory = "C:/Users/Artun/Desktop/Müzik Veri Seti/wav/Hüzünlü"  # Klasör yolunu belirtin
-num_files_to_delete = 1037  # Silinecek dosya sayısını belirtin
+directory = "C:/Users/Artun/Desktop/Müzik Veri Seti/wav/Neşeli"  # Klasör yolunu belirtin
+num_files_to_delete = 553  # Silinecek dosya sayısını belirtin
 
 delete_random_files(directory, num_files_to_delete)
 
