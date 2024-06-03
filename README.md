@@ -1,5 +1,7 @@
+# Transformator
 ## hubert-large-ls960-ft
-Is failed because not enough system recruitment.
+Is failed because not enough system recruitment. 
+# Deep Learing Algorithim
 ## LSTM
    Accuracy  F1 Score    Recall  Precision   ROC AUC       MCC 
    
