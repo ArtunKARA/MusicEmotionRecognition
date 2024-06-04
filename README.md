@@ -50,3 +50,20 @@ Confusion Matrix:
 
 ROC AUC Score (Macro): 0.9569365871499508
 
+## LSTM(1024-0.5_1024-0.5_cross_validation)
+
+   Accuracy  F1 Score    Recall  Precision   ROC AUC       MCC
+   
+0  0.847587   0.84753  0.847587   0.850642  0.959864  0.772467 
+
+Confusion Matrix: 
+
+[[362  32  10] 
+
+ [ 38 334  22] 
+ 
+ [ 30  48 305]] 
+ ![image](https://github.com/ArtunKARA/MusicEmotionRecognition/assets/76822513/d6323b2b-cf43-4eff-b942-c448320187f6)
+
+ROC AUC Score (Macro): 0.9598399299521306
+
