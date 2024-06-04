@@ -1,6 +1,8 @@
 # Transformator
-## hubert-large-ls960-ft
-Is failed because not enough system recruitment. 
+## hubert-large-ls960-ft (Disk Use)
+Test Accuracy: 0.5956
+   Accuracy  Precision    Recall  F1 Score  MCC  Sensitivity  Specificity  AUC
+0  0.595601        1.0  0.595601  0.746554  0.0          NaN          NaN  NaN
 # Deep Learing Algorithim
 ## LSTM
    Accuracy  F1 Score    Recall  Precision   ROC AUC       MCC 
