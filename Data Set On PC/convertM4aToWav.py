@@ -23,8 +23,8 @@ def convert_directory_m4a_to_wav(input_dir, output_dir):
                 print(f"Converted: {m4a_file_path} -> {wav_file_path}")
 
 # Ana dizinleri belirtin
-input_directory = 'C:/Users/Artun/Desktop/Müzik Veri Seti/m4a'  # m4a path
-output_directory = 'C:/Users/Artun/Desktop/Müzik Veri Seti/wav'  # wav path
+input_directory = 'C:/Users/Artun/Desktop/Müzik Veri Seti/bol/Hüzünlü'  # m4a path
+output_directory = 'C:/Users/Artun/Desktop/Müzik Veri Seti/bol/Neşeli'  # wav path
 
 # Dönüştürme işlemini başlat
 convert_directory_m4a_to_wav(input_directory, output_directory)

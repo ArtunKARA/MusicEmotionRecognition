@@ -3,8 +3,8 @@ from pydub import AudioSegment
 from pydub.utils import make_chunks
 
 # Giriş ve çıkış klasör yolları
-input_base_folder = "C:/Users/Artun/Desktop/Müzik Veri Seti/wav"
-output_base_folder = "C:/Users/Artun/Desktop/Müzik Veri Seti/wav"
+input_base_folder = "C:/Users/Artun/Desktop/Müzik Veri Seti/bol/"
+output_base_folder = "C:/Users/Artun/Desktop/Müzik Veri Seti/bol"
 
 # Alt klasörlerin adları
 subfolders = ['Agresif', 'Hüzünlü', 'Neşeli']

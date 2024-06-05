@@ -51,7 +51,7 @@ print(outputs.last_hidden_state.shape)
 import os
 
 # Silmek istediğiniz dizin yolunu belirtin
-directory = "C:/Users/Artun/Desktop/Müzik Veri Seti/wav/Agresif"
+directory = "C:/Users/Artun/Desktop/Müzik Veri Seti/wav/Neşeli"
 
 # 5 MB'yi bayta çevirin
 size_limit = 5 * 1024 * 1024  # 5 MB in bytes
@@ -94,7 +94,86 @@ def delete_random_files(directory, num_files_to_delete):
 
 # Kullanım
 directory = "C:/Users/Artun/Desktop/Müzik Veri Seti/wav/Neşeli"  # Klasör yolunu belirtin
-num_files_to_delete = 553  # Silinecek dosya sayısını belirtin
+num_files_to_delete = 430  # Silinecek dosya sayısını belirtin
 
 delete_random_files(directory, num_files_to_delete)
+
+#%% benzer ses silici
+import os
+import librosa
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+
+# Özellik vektörlerini (MFCC) hesapla
+def calculate_mfcc(audio_file):
+    y, sr = librosa.load(audio_file, sr=None)
+    mfcc = librosa.feature.mfcc(y=y, sr=sr)
+    return mfcc.flatten()
+
+# Klasördeki tüm ses dosyalarını al
+def get_audio_files(folder_path):
+    audio_files = []
+    for root, dirs, files in os.walk(folder_path):
+        for file in files:
+            if file.endswith(".wav") or file.endswith(".mp3"):  # Sadece WAV veya MP3 dosyalarını işle
+                audio_files.append(os.path.join(root, file))
+    return audio_files
+
+# Benzerlik ölçütlerine dayanarak dosyaları karşılaştır ve gerektiğinde sil
+def remove_similar_audio_files(folder_path, threshold=0.9):
+    audio_files = get_audio_files(folder_path)
+    audio_features = []
+    max_len = 0
+
+    # Tüm özellik vektörlerini hesapla ve en uzun vektör uzunluğunu bul
+    for file in audio_files:
+        features = calculate_mfcc(file)
+        audio_features.append(features)
+        if len(features) > max_len:
+            max_len = len(features)
+
+    # Tüm vektörleri en uzun vektöre göre hizala
+    for i in range(len(audio_features)):
+        if len(audio_features[i]) < max_len:
+            audio_features[i] = np.pad(audio_features[i], (0, max_len - len(audio_features[i])), 'constant')
+
+    # Benzerlik matrisini hesapla
+    similarity_matrix = cosine_similarity(audio_features)
+ 
+    # Benzer dosyaları bul ve sil
+    for i in range(len(audio_files)):
+        for j in range(i+1, len(audio_files)):
+            if similarity_matrix[i][j] > threshold:
+                print(f"{audio_files[i]} ve {audio_files[j]} benzer. Birini siliyorum...")
+                os.remove(audio_files[j])  # İkinciyi sil, isteğe bağlı olarak farklı bir işlem yapılabilir
+
+# Ana işlem
+if __name__ == "__main__":
+    folder_path = "C:/Users/Artun/Desktop/Müzik Veri Seti/wav/Hüzünlü"  # Kendi klasör yolunuza güncelleyin
+    remove_similar_audio_files(folder_path, threshold=0.9)
+#%% dosya adedi
+
+import os
+
+def count_files_in_directory(directory_path):
+    try:
+        # Klasördeki dosya ve alt klasörlerin listesini al
+        entries = os.listdir(directory_path)
+        
+        # Sadece dosyaları say
+        file_count = sum(1 for entry in entries if os.path.isfile(os.path.join(directory_path, entry)))
+        
+        print(f"Klasördeki dosya sayısı: {file_count}")
+    except FileNotFoundError:
+        print("Belirtilen klasör bulunamadı.")
+    except NotADirectoryError:
+        print("Belirtilen yol bir klasör değil.")
+    except PermissionError:
+        print("Klasöre erişim izni reddedildi.")
+
+# Kullanım
+directory_path = "C:/Users/Artun/Desktop/Müzik Veri Seti/wav/Hüzünlü"  # Buraya kontrol etmek istediğiniz klasörün yolunu yazın
+count_files_in_directory(directory_path)
+
+
 
