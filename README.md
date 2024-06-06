@@ -1,5 +1,7 @@
 # Transformator
 ## hubert-large-ls960-ft (Disk Use)
+![image](https://github.com/ArtunKARA/MusicEmotionRecognition/assets/76822513/2b9e7c5c-5152-4a01-9679-ce1555c501d4)
+
 Test Accuracy: 0.5956
    Accuracy  Precision    Recall  F1 Score  MCC  Sensitivity  Specificity  AUC
 0  0.595601        1.0  0.595601  0.746554  0.0          NaN          NaN  NaN
